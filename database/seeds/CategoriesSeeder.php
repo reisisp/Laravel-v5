@@ -10,11 +10,11 @@ class CategoriesSeeder extends Seeder
      * @return void
      */
     private $categories = [
-        'science' => 'наука',
+        'science' => 'Наука',
         'IT' => 'IT',
-        'sports' => 'спорт',
-        'health' => 'здоровье',
-        'history' => 'история'
+        'sports' => 'Спорт',
+        'health' => 'Здоровье',
+        'history' => 'История'
     ];
 
     public function run()
