@@ -16,7 +16,6 @@ class CreateForegnKeys extends Migration
         if (Schema::hasTable('categories') && Schema::hasTable('news')) {
             Schema::table('news', function (Blueprint $table) {
                 $table->unsignedBigInteger('category_id');
-
                 $table->foreign('category_id')->references('id')->on('categories');
             });
         }
@@ -31,6 +30,7 @@ class CreateForegnKeys extends Migration
     {
         Schema::table('news', function (Blueprint $table) {
             $table->dropForeign('news_category_id_foreign');
+            $table->dropColumn('category_id');
         });
     }
 }

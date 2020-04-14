@@ -26,7 +26,7 @@ Route::group([
         ->name('categories.index');
     Route::get('/{name}', 'CategoriesController@show')
         ->name('categories.show');
-    Route::get('/{name}/{id}', 'NewsController@show')
+    Route::get('/{name}/{news}', 'NewsController@show')
         ->name('news.show')
         ->where('id', '[0-9]+');
 });
@@ -44,10 +44,18 @@ Route::group([
     'namespace' => 'Admin',
     'as' => 'admin.'
 ], function () {
+    /*CRUD*/
     Route::get('/', 'IndexController@index')
         ->name('index');
-    Route::match(['get', 'post'], '/create', 'IndexController@create')
+    Route::match(['get', 'post'], '/create', 'NewsController@create')
         ->name('create');
+    Route::get('/destroy/{news}', 'NewsController@destroy')
+        ->name('destroy');
+    Route::get('/edit/{news}', 'NewsController@edit')
+        ->name('edit');
+    Route::post('/update/{news}', 'NewsController@update')
+        ->name('update');
+
     Route::get('/download', 'IndexController@json')
         ->name('download');
 });

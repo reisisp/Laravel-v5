@@ -11,7 +11,6 @@ class ExampleTest extends TestCase
         'id', 'title', 'news_text', 'is_private', 'created_at', 'updated_at', 'category_id', 'category_en', 'category_ru'
     ];
 
-// Принцип я понял, раписывать эти тесты можно до бесконесности порывая каждую возможную ошибку
     public function testIndexNews()
     {
         $news = News::getAllNews();
