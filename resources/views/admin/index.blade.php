@@ -18,7 +18,13 @@
                                 <a href="{{ route('admin.create') }}">Добавить новую новость</a>
                             </li>
                             <li class="list-group-item list-group-item-action">
-                                <a href="{{ route('admin.download') }}">Выгрузить новости <span>(JSON)</span></a>
+                                <a href="{{ route('admin.category.create') }}">Добавить новую категорию</a>
+                            </li>
+                            <li class="list-group-item list-group-item-action">
+                                <a href="{{ route('admin.category.index') }}">Изменить или удалить категорию</a>
+                            </li>
+                            <li class="list-group-item list-group-item-action">
+                                <a href="{{ route('admin.json') }}">Выгрузить новости <span>(JSON)</span></a>
                             </li>
                         </ul>
                     </div>
@@ -45,9 +51,15 @@
                     </div>
                 </div>
             @empty
-                <p>Нет новостей</p>
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <h3>Нет новостей</h3>
+                        </div>
+                    </div>
+                </div>
             @endforelse
-            {{ $news->links() }}
         </div>
+        {{ $news->links() }}
     </div>
 @endsection

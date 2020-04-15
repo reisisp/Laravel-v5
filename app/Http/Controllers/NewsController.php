@@ -9,28 +9,22 @@ class NewsController extends Controller
 {
     public function index()
     {
-        // Здесь join 2х таблиц, не нашел как следать при помощи ORM join
-        $news = News::getAllNews();
+        $news = News::query()
+            ->where('is_private', false)
+            ->orderByDesc('id')
+            ->paginate(7);
 
-        return view('news.index')
-            ->with('news', $news);
+        return view('news.index')->with('news', $news);
     }
 
-    public function show($name, $id)
+    public function show($id)
     {
-        $news = News::query()
-            ->find($id);
-        $category = Categories::query()
-            ->select(['id', 'category_ru', 'category_en'])
-            ->where('category_en', $name)
-            ->where('id', $news->category_id)
-            ->get();
+        $news = News::query()->find($id);
 
-
-        return view('news.newsCard')
-            ->with('categories', $category)
-            ->with('newsOne', $news);
-
-
+        if (!empty($news)) {
+            return view('news.newsCard')->with('news', $news);
+        } else {
+            return redirect()->route('news.index');
+        }
     }
 }

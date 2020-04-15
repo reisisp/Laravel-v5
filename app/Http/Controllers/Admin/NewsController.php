@@ -9,6 +9,14 @@ use App\models\News;
 
 class NewsController extends Controller
 {
+    public function edit(Request $request, News $news)
+    {
+        return view('admin.create', [
+            'news' => $news,
+            'categories' => Categories::query()->select(['id', 'category_ru'])->get()
+        ]);
+    }
+
     public function create(Request $request)
     {
         $news = new News();
@@ -17,11 +25,18 @@ class NewsController extends Controller
 
             $url = null;
 
-            $news->fill($request->all())->save();
+            $data = $this->validate($request, News::rules(), [], News::attributeNames());
 
-            return redirect()
-                ->route('admin.index')
-                ->with('success', 'Новость успешно создана!');
+            $result = $news->fill($data)->save();
+
+            if ($result) {
+                return redirect()->route('admin.index')
+                    ->with('success', 'Новость успешно создана!');
+            } else {
+                $request->flash();
+                return redirect()->route('admin.create')
+                    ->with('error', 'Ошибка добавления новости!');
+            }
         }
 
         return view('admin.create', [
@@ -34,27 +49,16 @@ class NewsController extends Controller
     {
         $news->delete();
 
-        return redirect()
-            ->route('admin.index')
+        return redirect()->route('admin.index')
             ->with('success', 'Новость успешно удалена!');
-    }
-
-    public function edit(Request $request, News $news)
-    {
-        return view('admin.create', [
-            'news' => $news,
-            'categories' => Categories::query()->select(['id', 'category_ru'])->get()
-        ]);
     }
 
     public function update(Request $request, News $news)
     {
-        if ($request->isMethod('post')) {
-            $news->fill($request->all());
-            $news->save();
-            return redirect()
-                ->route('admin.index')
-                ->with('success', 'Новость успешно изменена!');
-        }
+        $news->fill($request->all());
+        $news->save();
+        return redirect()
+            ->route('admin.index')
+            ->with('success', 'Новость успешно изменена!');
     }
 }
