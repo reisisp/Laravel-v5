@@ -13,18 +13,41 @@
                 <div class="card">
                     <div class="card-body">
                         <h1>Админка</h1><br>
-                        <h3>{{ $success }}</h3>
                         <ul class="list-group">
                             <li class="list-group-item list-group-item-action">
                                 <a href="{{ route('admin.create') }}">Добавить новую новость</a>
                             </li>
                             <li class="list-group-item list-group-item-action">
-                                <a href="{{ route('admin.download') }}">Выгрузить новости <span>(excel)</span></a>
+                                <a href="{{ route('admin.download') }}">Выгрузить новости <span>(JSON)</span></a>
                             </li>
                         </ul>
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
+    <br>
+    <div class="container">
+        <div class="row justify-content-center">
+            <h2>Новости</h2>
+            @forelse($news as $item)
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <h2>{{ $item->title }}</h2>
+                            <a href="{{ route('admin.edit', $item) }}">
+                                <button type="button" class="btn btn-success">Edit</button>
+                            </a>
+                            <a href="{{ route('admin.destroy', $item) }}">
+                                <button type="button" class="btn btn-danger">Delete</button>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            @empty
+                <p>Нет новостей</p>
+            @endforelse
+            {{ $news->links() }}
         </div>
     </div>
 @endsection

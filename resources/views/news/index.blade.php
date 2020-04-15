@@ -6,10 +6,6 @@
     @include('elements.menu')
 @endsection
 
-@section('popularCategories')
-    @include('news.popularCategories')
-@endsection
-
 @section('content')
     <div class="container">
         <div class="row justify-content-center">
@@ -26,6 +22,7 @@
                         @empty
                             Нет новостей
                         @endforelse
+                        {{ $news->links() }}
                     </div>
                 </div>
             </div>

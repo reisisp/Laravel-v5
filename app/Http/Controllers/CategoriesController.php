@@ -4,28 +4,32 @@ namespace App\Http\Controllers;
 
 use App\models\News;
 use App\models\Categories;
-use Illuminate\Http\Request;
 
 class CategoriesController extends Controller
 {
     public function index()
     {
+        $categories = Categories::query()
+            ->select(['id', 'category_en', 'category_ru'])
+            ->get();
+
         return view('news.allCategories')
-            ->with('categories', Categories::getCategories())
-            ->with('popularCategories', Categories::getPopularCategories());
+            ->with('categories', $categories);
     }
 
     public function show($name)
     {
-        $category = Categories::getOneCategoryByName($name);
-        if ($category) {
-            return view('news.categoryOne')
-                ->with('category', $category)
-                ->with('news', News::getNewsByCategoryName($name))
-                ->with('popularCategories', Categories::getPopularCategories());
-        } else {
-            return redirect()
-                ->route('categories.index');
-        }
+        $category = Categories::query()
+            ->select(['id', 'category_ru', 'category_en'])
+            ->where('category_en', $name)
+            ->get();
+        $news = News::query()
+            ->where('is_private', false)
+            ->where('category_id', $category[0]->id)
+            ->paginate(5);
+
+        return view('news.categoryOne')
+            ->with('category', $category[0])
+            ->with('news', $news);
     }
 }

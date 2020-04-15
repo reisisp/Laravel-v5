@@ -18,8 +18,7 @@ class CreateNewsTable extends Migration
             $table->string('title')->comment('Заголовок');
             $table->string('news_text')->comment('Содержание новости');
             $table->boolean('is_private')
-                ->default(true)
-                ->comment('Доступность содержания для неавторизованных');
+                ->default(false);
             $table->timestamps();
         });
     }

@@ -12,15 +12,17 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-body">
-                        <h1>Добавить новость</h1><br>
+                        {{-- @dump($news)--}}
+                        <h1>@if ($news->id)Изменить@elseДобавить@endif новость</h1><br>
 
-                        <form enctype="multipart/form-data" method="POST" action="{{ route('admin.create') }}">
+                        <form enctype="multipart/form-data" method="POST"
+                              action="@if(!$news->id){{ route('admin.create') }}@else{{ route('admin.update', $news) }}@endif">
                             @csrf
 
                             <div class="form-group">
                                 <label for="title">Название новости</label>
                                 <input name="title" type="text" class="form-control" id="newsTitle"
-                                       value="{{ old('title') }}">
+                                       value="{{ $news->title ?? old('title') }}">
                             </div>
 
 
@@ -29,7 +31,7 @@
                                 <label for="category_id">Категория новости</label>
                                 <select name="category_id" class="form-control" id="category_id">
                                     @forelse($categories as $item)
-                                        <option @if ($item->id == old('category_ru')) selected
+                                        <option @if ($item->id == $news->category_id ?? $item->id == old('category_ru')) selected
                                                 @endif value="{{ $item->id }}">{{ $item->category_ru }}</option>
                                     @empty
                                         <h2>Что-то пошло не так</h2>
@@ -42,11 +44,12 @@
                             <div class="form-group">
                                 <label for="news_text">Текст новости</label>
                                 <textarea name="news_text" class="form-control" rows="5"
-                                          id="news_text">{{ old('text') }}</textarea>
+                                          id="news_text">{{ $news->news_text ?? old('news_text') }}</textarea>
                             </div>
 
                             <div class="form-check">
-                                <input @if (old('is_private') == 1) checked @endif name="is_private"
+                                <input @if ($news->is_private == 1 || old('is_private') == 1) checked
+                                       @endif name="is_private"
                                        class="form-check-input" type="checkbox" value="1"
                                        id="newsPrivate">
                                 <label class="form-check-label" for="newsPrivate">
@@ -55,7 +58,8 @@
                             </div>
 
                             <div class="form-group">
-                                <input type="submit" class="btn btn-outline-primary" value="Добавить новость"
+                                <input type="submit" class="btn btn-outline-primary"
+                                       value=" @if ($news->id)Изменить@elseДобавить@endif новость"
                                        id="addNews">
                             </div>
                         </form>
