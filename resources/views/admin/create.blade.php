@@ -12,8 +12,7 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-body">
-                        {{-- @dump($news)--}}
-                        <h1>@if ($news->id)Изменить@elseДобавить@endif новость</h1><br>
+                        <h1>@if ($news->id){{__('Изменить')}}@else{{__('Добавить')}}@endif новость</h1><br>
 
                         <form enctype="multipart/form-data" method="POST"
                               action="@if(!$news->id){{ route('admin.create') }}@else{{ route('admin.update', $news) }}@endif">
@@ -21,14 +20,27 @@
 
                             <div class="form-group">
                                 <label for="title">Название новости</label>
-                                <input name="title" type="text" class="form-control" id="newsTitle"
+                                @if ($errors->has('title'))
+                                    <div class="alert alert-danger" role="alert">
+                                        @foreach ($errors->get('title') as $error)
+                                            {{ $error }}
+                                        @endforeach
+                                    </div>
+                                @endif
+                                <input name="title" type="text" class="form-control" id="title"
                                        value="{{ $news->title ?? old('title') }}">
                             </div>
 
 
                             <div class="form-group">
-
                                 <label for="category_id">Категория новости</label>
+                                @if ($errors->has('category_id'))
+                                    <div class="alert alert-danger" role="alert">
+                                        @foreach ($errors->get('category_id') as $error)
+                                            {{ $error }}
+                                        @endforeach
+                                    </div>
+                                @endif
                                 <select name="category_id" class="form-control" id="category_id">
                                     @forelse($categories as $item)
                                         <option @if ($item->id == $news->category_id ?? $item->id == old('category_ru')) selected
@@ -43,10 +55,24 @@
 
                             <div class="form-group">
                                 <label for="news_text">Текст новости</label>
+                                @if ($errors->has('news_text'))
+                                    <div class="alert alert-danger" role="alert">
+                                        @foreach ($errors->get('news_text') as $error)
+                                            {{ $error }}
+                                        @endforeach
+                                    </div>
+                                @endif
                                 <textarea name="news_text" class="form-control" rows="5"
                                           id="news_text">{{ $news->news_text ?? old('news_text') }}</textarea>
                             </div>
 
+                            @if ($errors->has('is_private'))
+                                <div class="alert alert-danger" role="alert">
+                                    @foreach ($errors->get('is_private') as $error)
+                                        {{ $error }}
+                                    @endforeach
+                                </div>
+                            @endif
                             <div class="form-check">
                                 <input @if ($news->is_private == 1 || old('is_private') == 1) checked
                                        @endif name="is_private"
@@ -59,7 +85,7 @@
 
                             <div class="form-group">
                                 <input type="submit" class="btn btn-outline-primary"
-                                       value=" @if ($news->id)Изменить@elseДобавить@endif новость"
+                                       value="@if ($news->id){{__('Изменить')}}@else{{__('Добавить')}}@endif новость"
                                        id="addNews">
                             </div>
                         </form>

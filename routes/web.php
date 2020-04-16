@@ -13,26 +13,6 @@
 
 /*
 |--------------------------------------------------------------------------
-| Новости и категории
-|--------------------------------------------------------------------------
-|
-*/
-Route::get('/', 'NewsController@index')
-    ->name('news.index');
-Route::group([
-    'prefix' => 'categories',
-], function () {
-    Route::get('/', 'CategoriesController@index')
-        ->name('categories.index');
-    Route::get('/{name}', 'CategoriesController@show')
-        ->name('categories.show');
-    Route::get('/{name}/{news}', 'NewsController@show')
-        ->name('news.show')
-        ->where('id', '[0-9]+');
-});
-
-/*
-|--------------------------------------------------------------------------
 | Админка
 |--------------------------------------------------------------------------
 |
@@ -44,23 +24,44 @@ Route::group([
     'namespace' => 'Admin',
     'as' => 'admin.'
 ], function () {
-    /*CRUD*/
-    Route::get('/', 'IndexController@index')
-        ->name('index');
-    Route::match(['get', 'post'], '/create', 'NewsController@create')
-        ->name('create');
-    Route::get('/destroy/{news}', 'NewsController@destroy')
-        ->name('destroy');
-    Route::get('/edit/{news}', 'NewsController@edit')
-        ->name('edit');
-    Route::post('/update/{news}', 'NewsController@update')
-        ->name('update');
+    /*CRUD Новостей*/
+    Route::get('/', 'IndexController@index')->name('index');
+    Route::match(['get', 'post'], '/create', 'NewsController@create')->name('create');
+    Route::get('/destroy/{news}', 'NewsController@destroy')->name('destroy');
+    Route::get('/edit/{news}', 'NewsController@edit')->name('edit');
+    Route::post('/update/{news}', 'NewsController@update')->name('update');
 
-    Route::get('/download', 'IndexController@json')
-        ->name('download');
+    Route::get('/json', 'IndexController@json')->name('json');
+
+    /*CRUD Категорий*/
+
+    Route::get('/categories', 'CategoryController@index')->name('category.index');
+    Route::match(['get', 'post'],'/categories/create', 'CategoryController@create')->name('category.create');
+    Route::get('/categories/destroy/{categories}', 'CategoryController@destroy')->name('category.destroy');
+    Route::get('/categories/edit/{categories}', 'CategoryController@edit')->name('category.edit');
+    Route::post('/categories/update/{categories}', 'CategoryController@update')->name('category.update');
+});
+
+
+/*
+|--------------------------------------------------------------------------
+| Новости и категории
+|--------------------------------------------------------------------------
+|
+*/
+Route::get('/', 'NewsController@index')->name('news.index');
+Route::get('/one/{news}', 'NewsController@show')->name('news.show')
+    ->where('id', '[0-9]+');
+Route::group([
+    'as' => 'categories.'
+], function () {
+    Route::get('/categories', 'CategoriesController@index')
+        ->name('index');
+    Route::get('/category/{name}', 'CategoriesController@show')
+        ->name('show');
 });
 
 
 Auth::routes();
 
-//Route::get('/home', 'HomeController@index')->name('home');
+

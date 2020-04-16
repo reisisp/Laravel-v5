@@ -3,19 +3,32 @@
 namespace App\models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\DB;
 
 class News extends Model
 {
     protected $fillable = ['title', 'news_text', 'is_private', 'category_id'];
 
-    public static function getAllNews()
-    {
-        return DB::table('news')
-            ->join('categories', 'news.category_id', '=', 'categories.id')
-            ->select('news.*', 'categories.*')
-            ->where('is_private', false)
-            ->orderByDesc('news.id')
-            ->paginate(5);
+    public function category() {
+        return $this->belongsTo(Categories::class, 'category_id')->first();
+    }
+
+    public static function attributeNames() {
+        return [
+            'title' => 'Заголовок новости',
+            'news_text' => 'Текст новости',
+            'category_id' => "Категория новости",
+            'is_private' => "Приватность"
+        ];
+    }
+
+    public static function rules() {
+        $tableNameCategory = (new Categories())->getTable();
+        return [
+            'title' => 'required|min:5|max:20',
+            'news_text' => 'required|min:30',
+            'category_id' => "required|exists:{$tableNameCategory},id",
+            //поставил bool - но работает не так как я думал
+            //'is_private' => "required|boolean"
+        ];
     }
 }

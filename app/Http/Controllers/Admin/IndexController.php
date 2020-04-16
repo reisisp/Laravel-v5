@@ -13,12 +13,12 @@ class IndexController extends Controller
             ->orderByDesc('id')
             ->paginate(5);
 
-        return view('admin.index', ['news' => $news]);
+        return view('admin.index')->with('news', $news);
     }
 
     public function json()
     {
-        return response()->json(News::getAllNews())
+        return response()->json(News::query()->get())
             ->header('Content-Disposition', 'attachment; filename = "json.txt"')
             ->setEncodingOptions(JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
     }

@@ -20,6 +20,7 @@
                         @empty
                             Нет категорий
                         @endforelse
+                        {{ $categories->links() }}
                     </div>
                 </div>
             </div>
