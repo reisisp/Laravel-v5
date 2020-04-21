@@ -1,6 +1,6 @@
 @extends('layouts.main')
 
-@section('title', $category->category_ru)
+@section('title', 'Новость по категории')
 
 @section ('menu')
     @include('elements.menu')
@@ -12,11 +12,10 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-body">
-                        <h1>{{ $category->category_ru }}</h1><br>
                         @forelse($news as $item)
                             <h2>{{ $item->title }}</h2>
                             @if (!$item->is_private)
-                                <a href="{{ route('news.show', [$category->category_en, $item->id]) }}">Подробнее...</a>
+                                <a href="{{ route('news.show', $item->id) }}">Подробнее...</a>
                                 <br>
                             @endif
                             <hr>
@@ -24,6 +23,7 @@
                             Нет новостей
                         @endforelse
                         {{ $news->links() }}
+                        <a href="{{ Redirect::back()->getTargetUrl() }}">Назад</a>
                     </div>
                 </div>
             </div>
