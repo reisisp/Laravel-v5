@@ -13,10 +13,11 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="form-group">
+                            @dump($categories)
                             <h1>@if ($categories->id){{__('Изменить')}}@else{{__('Добавить')}}@endif категорию</h1><br>
 
                             <form enctype="multipart/form-data" method="POST"
-                                  action="@if(!$categories->id){{ route('admin.category.create') }}@else{{ route('admin.category.update', $categories) }}@endif">
+                                  action="@if(!$categories->id){{ route('admin.categories.store') }}@else{{ route('admin.categories.update', $categories) }}@endif">
                                 @csrf
 
                                 @if ($errors->has('category_ru'))
@@ -34,6 +35,7 @@
                                            id="addCategory">
                                 </div>
                             </form>
+
                             <a href="{{ Redirect::back()->getTargetUrl() }}">Назад</a>
                         </div>
                     </div>

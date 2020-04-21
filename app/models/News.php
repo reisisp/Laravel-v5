@@ -14,7 +14,7 @@ class News extends Model
 
     public static function attributeNames() {
         return [
-            'title' => 'Заголовок новости',
+            'title' => 'Название новости',
             'news_text' => 'Текст новости',
             'category_id' => "Категория новости",
             'is_private' => "Приватность"
@@ -25,10 +25,9 @@ class News extends Model
         $tableNameCategory = (new Categories())->getTable();
         return [
             'title' => 'required|min:5|max:20',
-            'news_text' => 'required|min:30',
+            'news_text' => 'required|min:5|max:50',
             'category_id' => "required|exists:{$tableNameCategory},id",
-            //поставил bool - но работает не так как я думал
-            //'is_private' => "required|boolean"
+            'is_private' => 'sometimes|min:0|max:1'
         ];
     }
 }

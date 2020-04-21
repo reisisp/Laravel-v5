@@ -2,17 +2,6 @@
 
 /*
 |--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
-
-/*
-|--------------------------------------------------------------------------
 | Админка
 |--------------------------------------------------------------------------
 |
@@ -22,26 +11,32 @@
 Route::group([
     'prefix' => 'admin',
     'namespace' => 'Admin',
-    'as' => 'admin.'
+    'as' => 'admin.',
+    'middleware' =>'auth'
 ], function () {
-    /*CRUD Новостей*/
-    Route::get('/', 'IndexController@index')->name('index');
-    Route::match(['get', 'post'], '/create', 'NewsController@create')->name('create');
-    Route::get('/destroy/{news}', 'NewsController@destroy')->name('destroy');
-    Route::get('/edit/{news}', 'NewsController@edit')->name('edit');
-    Route::post('/update/{news}', 'NewsController@update')->name('update');
+    Route::match(['get', 'post'], '/profile','ProfileController@update')->name('profile.update');
 
-    Route::get('/json', 'IndexController@json')->name('json');
+    /*CRUD Новостей*/
+    Route::resource('/news', 'NewsController');
 
     /*CRUD Категорий*/
+    Route::resource('/categories', 'CategoriesController');
 
-    Route::get('/categories', 'CategoryController@index')->name('category.index');
+    /*Выгрузка новостей*/
+    Route::get('/json', 'IndexController@json')->name('json');
+
+
+
+   /* Route::get('/categories', 'CategoryController@index')->name('category.index');
     Route::match(['get', 'post'],'/categories/create', 'CategoryController@create')->name('category.create');
     Route::get('/categories/destroy/{categories}', 'CategoryController@destroy')->name('category.destroy');
     Route::get('/categories/edit/{categories}', 'CategoryController@edit')->name('category.edit');
-    Route::post('/categories/update/{categories}', 'CategoryController@update')->name('category.update');
-});
+    Route::post('/categories/update/{categories}', 'CategoryController@update')->name('category.update');*/
 
+
+});
+/*Добавление пользователя*/
+//Route::get('register', 'Auth\RegisterController@showRegistrationForm')->name('register');
 
 /*
 |--------------------------------------------------------------------------
@@ -63,5 +58,9 @@ Route::group([
 
 
 Auth::routes();
+/*Route::get('login', 'Auth\LoginController@showLoginForm')->name('login');
+Route::post('login', 'Auth\LoginController@login');
+Route::post('logout', 'Auth\LoginController@logout')->name('logout');*/
+
 
 

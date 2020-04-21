@@ -3,62 +3,81 @@
 namespace App\Http\Controllers\Admin;
 
 use App\models\Categories;
+use App\models\News;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\models\News;
+use Storage;
 
 class NewsController extends Controller
 {
-    public function edit(Request $request, News $news)
+    public function index()
     {
-        return view('admin.create', [
-            'news' => $news,
-            'categories' => Categories::query()->select(['id', 'category_ru'])->get()
-        ]);
+        $news = News::query()
+            ->orderByDesc('id')
+            ->paginate(5);
+
+        return view('admin.index')->with('news', $news);
     }
 
-    public function create(Request $request)
+    public function create(News $news)
     {
-        $news = new News();
+        $categories = Categories::query()->select(['id', 'category_ru'])->get();
 
-        if ($request->isMethod('post')) {
+        return view('admin.create')
+            ->with('categories', $categories)->with('news', $news);
+    }
 
-            $url = null;
+    public function edit(News $news)
+    {
+        $categories = Categories::query()->select(['id', 'category_ru'])->get();
 
-            $data = $this->validate($request, News::rules(), [], News::attributeNames());
-
-            $result = $news->fill($data)->save();
-
-            if ($result) {
-                return redirect()->route('admin.index')
-                    ->with('success', 'Новость успешно создана!');
-            } else {
-                $request->flash();
-                return redirect()->route('admin.create')
-                    ->with('error', 'Ошибка добавления новости!');
-            }
-        }
-
-        return view('admin.create', [
-            'categories' => Categories::query()->select(['id', 'category_ru'])->get(),
-            'news' => $news
-        ]);
+        return view('admin.create')
+            ->with('categories', $categories)->with('news', $news);
     }
 
     public function destroy(News $news)
     {
         $news->delete();
-
-        return redirect()->route('admin.index')
+        return redirect()->route('admin.news.index')
             ->with('success', 'Новость успешно удалена!');
     }
 
     public function update(Request $request, News $news)
     {
+        $result = $this->saveData($request, $news);
+
+        if ($result) {
+            return redirect()
+                ->route('admin.news.index')
+                ->with('success', 'Новость успешно изменена!');
+        } else {
+            $request->flash();
+            return redirect()->route('admin.news.index')
+                ->with('error', 'Ошибка редактирования новости!');
+        }
+    }
+
+    public function store(Request $request)
+    {
+        $news = new News();
+
+        $result = $this->saveData($request, $news);
+
+        if ($result) {
+            return redirect()->route('admin.news.index')
+                ->with('success', 'Новость успешно создана!');
+        } else {
+            $request->flash();
+            return redirect()->route('admin.news.create')
+                ->with('error', 'Ошибка добавления новости!');
+        }
+    }
+
+    private function saveData(Request $request, News $news)
+    {
+        $this->validate($request, News::rules(), [], News::attributeNames());
         $news->fill($request->all());
-        $news->save();
-        return redirect()
-            ->route('admin.index')
-            ->with('success', 'Новость успешно изменена!');
+        return $news->save();
     }
 }
+

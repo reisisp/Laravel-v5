@@ -18,6 +18,7 @@ class CreateNewsTable extends Migration
             $table->string('title')->comment('Заголовок');
             $table->string('news_text')->comment('Содержание новости');
             $table->boolean('is_private')->default(false);
+            $table->string('image')->nullable(true);
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent();
         });
