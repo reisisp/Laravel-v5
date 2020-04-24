@@ -17,17 +17,19 @@ class News extends Model
             'title' => 'Название новости',
             'news_text' => 'Текст новости',
             'category_id' => "Категория новости",
-            'is_private' => "Приватность"
+            'is_private' => "Приватность",
+            'image' => 'Изображение'
         ];
     }
 
     public static function rules() {
         $tableNameCategory = (new Categories())->getTable();
         return [
-            'title' => 'required|min:5|max:20',
-            'news_text' => 'required|min:5|max:50',
+            'title' => 'required|min:5|max:600',
+            'news_text' => 'required|min:5|max:3000',
             'category_id' => "required|exists:{$tableNameCategory},id",
-            'is_private' => 'sometimes|min:0|max:1'
+            'is_private' => 'sometimes|min:0|max:1',
+            'image' => 'mimes:jpeg,bmp,png|max:1000'
         ];
     }
 }

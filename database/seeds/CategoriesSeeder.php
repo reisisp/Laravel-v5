@@ -27,8 +27,8 @@ class CategoriesSeeder extends Seeder
         $data = [];
         foreach ($this->categories as $key => $value) {
             $data[] = [
-                'category_en' => $key,
-                'category_ru' => $value
+                'category' => $value,
+                'slug' => $key
             ];
         }
         return $data;

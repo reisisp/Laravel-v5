@@ -16,34 +16,37 @@ class NewsController extends Controller
             ->orderByDesc('id')
             ->paginate(5);
 
-        return view('admin.index')->with('news', $news);
+        return view('admin.news.index')->with('news', $news);
     }
 
     public function create(News $news)
     {
-        $categories = Categories::query()->select(['id', 'category_ru'])->get();
+        $categories = Categories::query()->select(['id', 'category'])->get();
 
-        return view('admin.create')
+        return view('admin.news.create')
             ->with('categories', $categories)->with('news', $news);
     }
 
     public function edit(News $news)
     {
-        $categories = Categories::query()->select(['id', 'category_ru'])->get();
+        $categories = Categories::query()->select(['id', 'category'])->get();
 
-        return view('admin.create')
+        return view('admin.news.create')
             ->with('categories', $categories)->with('news', $news);
     }
 
     public function destroy(News $news)
     {
         $news->delete();
-        return redirect()->route('admin.news.index')
+        return redirect()->back()
             ->with('success', 'Новость успешно удалена!');
     }
 
     public function update(Request $request, News $news)
     {
+        if ($request['is_private'] != 1) {
+            $request['is_private'] = 0;
+        }
         $result = $this->saveData($request, $news);
 
         if ($result) {
@@ -64,7 +67,7 @@ class NewsController extends Controller
         $result = $this->saveData($request, $news);
 
         if ($result) {
-            return redirect()->route('admin.news.index')
+            return redirect()->route('admin.index')
                 ->with('success', 'Новость успешно создана!');
         } else {
             $request->flash();
@@ -75,6 +78,12 @@ class NewsController extends Controller
 
     private function saveData(Request $request, News $news)
     {
+        if ($request->file('image')) {
+            $path = Storage::putFile('public', $request->file('image'));
+            $url = Storage::url($path);
+            $news->image = $url;
+        }
+
         $this->validate($request, News::rules(), [], News::attributeNames());
         $news->fill($request->all());
         return $news->save();

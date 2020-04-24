@@ -7,6 +7,11 @@ use App\Http\Controllers\Controller;
 
 class IndexController extends Controller
 {
+    public function index()
+    {
+        return view('admin.index');
+    }
+
     public function json()
     {
         return response()->json(News::query()->get())

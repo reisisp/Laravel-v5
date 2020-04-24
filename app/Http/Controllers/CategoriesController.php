@@ -10,8 +10,8 @@ class CategoriesController extends Controller
     public function index()
     {
         $categories = Categories::query()
-            ->select(['id', 'category_en', 'category_ru'])
-            ->orderBy('category_ru')
+            ->select(['id', 'slug', 'category'])
+            ->orderBy('category')
             ->paginate(10);
 
         return view('news.allCategories')
@@ -21,8 +21,8 @@ class CategoriesController extends Controller
     public function show($name)
     {
         $category = Categories::query()
-            ->select(['id', 'category_ru'])
-            ->where('category_en', $name)
+            ->select(['id', 'category'])
+            ->where('slug', $name)
             ->get();
         $news = News::query()
             ->where('category_id', $category[0]->id)

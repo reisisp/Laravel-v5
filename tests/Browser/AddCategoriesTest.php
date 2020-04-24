@@ -19,7 +19,7 @@ class AddCategoriesTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->visit('http://lar.local/admin/categories/create')
                 ->assertSee('Добавить категорию')
-                ->type('category_ru', 'text');
+                ->type('category', 'text');
         });
         $this->browse(function (Browser $browser) {
             $browser->visit('http://lar.local/admin/categories/create')

@@ -164,6 +164,8 @@ return [
         Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
         Maatwebsite\Excel\ExcelServiceProvider::class,
         Barryvdh\Debugbar\ServiceProvider::class,
+        Orchestra\Parser\XmlServiceProvider::class,
+        \SocialiteProviders\Manager\ServiceProvider::class,
         /*
          * Package Service Providers...
          */
@@ -229,6 +231,7 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
         'Excel' => Maatwebsite\Excel\Facades\Excel::class,
         'Debugbar' => Barryvdh\Debugbar\Facade::class,
+        'XmlParser' => Orchestra\Parser\Xml\Facade::class,
 
     ],
 

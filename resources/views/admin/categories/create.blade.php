@@ -1,6 +1,6 @@
 @extends('layouts.main')
 
-@section('title', 'Добавить категорию')
+@section('title')@if ($categories->id){{__('Изменить')}}@else{{__('Добавить')}}@endif категорию@endsection
 
 @section ('menu')
     @include('elements.adminMenu')
@@ -13,20 +13,21 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="form-group">
-                            @dump($categories)
                             <h1>@if ($categories->id){{__('Изменить')}}@else{{__('Добавить')}}@endif категорию</h1><br>
 
                             <form enctype="multipart/form-data" method="POST"
                                   action="@if(!$categories->id){{ route('admin.categories.store') }}@else{{ route('admin.categories.update', $categories) }}@endif">
                                 @csrf
+                                @if ($categories->id) @method('PATCH') @endif
 
-                                @if ($errors->has('category_ru'))
-                                    <div class="alert alert-danger" role="alert">@foreach ($errors->get('category_ru') as $error){{ $error }}@endforeach</div>
+                                @if ($errors->has('category'))
+                                    <div class="alert alert-danger"
+                                         role="alert">@foreach ($errors->get('category') as $error){{ $error }}@endforeach</div>
                                 @endif
                                 <div class="form-group">
-                                    <label for="category_ru">Название категории</label>
-                                    <input name="category_ru" type="text" class="form-control" id="category_ru"
-                                           value="{{$categories->category_ru ?? old('category_ru') }}">
+                                    <label for="category">Название категории</label>
+                                    <input name="category" type="text" class="form-control" id="category"
+                                           value="{{ old('category') ?? $categories->category}}">
                                 </div>
 
                                 <div class="form-group">
@@ -36,10 +37,10 @@
                                 </div>
                             </form>
 
-                            <a href="{{ Redirect::back()->getTargetUrl() }}">Назад</a>
                         </div>
                     </div>
                 </div>
+                <h2><a href="{{ route('admin.index') }}">Назад</a></h2>
             </div>
         </div>
 @endsection

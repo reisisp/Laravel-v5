@@ -1,6 +1,6 @@
 @extends('layouts.main')
 
-@section('title', 'Добавить новость')
+@section('title')@if ($news->id){{__('Изменить')}}@else{{__('Добавить')}}@endif новость@endsection
 
 @section ('menu')
     @include('elements.adminMenu')
@@ -12,7 +12,6 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-body">
-                        @dump($news)
                         <h1>@if ($news->id){{__('Изменить')}}@else{{__('Добавить')}}@endif новость</h1><br>
 
                         <form enctype="multipart/form-data" method="POST"
@@ -30,7 +29,7 @@
                                     </div>
                                 @endif
                                 <input name="title" type="text" class="form-control" id="title"
-                                       value="{{ old('title') ?? $news->title }}">
+                                       value="@if(old()){{ old('title') }}@else{{ $news->title }}@endif">
                             </div>
 
 
@@ -45,8 +44,8 @@
                                 @endif
                                 <select name="category_id" class="form-control" id="category_id">
                                     @forelse($categories as $item)
-                                        <option @if ($item->id == old('category_id') ?? $item->id == $news->category_id) selected
-                                                @endif value="{{ $item['id'] }}">{{ $item['category_ru'] }}</option>
+                                        <option @if ($item->id == old('category_id')) selected @elseif($news->category_id == $item->id) selected
+                                                @endif value="{{ $item['id'] }}">{{ $item['category'] }}</option>
                                     @empty
                                         <h2>Что-то пошло не так</h2>
                                     @endforelse
@@ -64,6 +63,17 @@
                                 @endif
                                 <textarea name="news_text" class="form-control" rows="5"
                                           id="news_text">{{ old('news_text') ?? $news->news_text ?? "" }}</textarea>
+                            </div>
+
+                            <div class="form-group">
+                                @if ($errors->has('image'))
+                                    <div class="alert alert-danger" role="alert">
+                                        @foreach ($errors->get('image') as $error)
+                                            {{ $error }}
+                                        @endforeach
+                                    </div>
+                                @endif
+                                <input type="file" name="image">
                             </div>
 
                             @if ($errors->has('is_private'))
@@ -87,7 +97,7 @@
                             </div>
                         </form>
 
-                        <a href="{{ Redirect::back()->getTargetUrl() }}">Назад</a>
+                        <h2><a href="{{ route('admin.index') }}">Назад</a></h2>
                     </div>
                 </div>
             </div>

@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Categories extends Model
 {
-    protected $fillable = ['category_ru', 'category_en'];
+    protected $fillable = ['category', 'slug'];
 
     public function news()
     {
@@ -15,13 +15,13 @@ class Categories extends Model
 
     public static function attributeNames() {
         return [
-            'category_ru' => 'Название категории'
+            'category' => 'Название категории'
         ];
     }
 
     public static function rules() {
         return [
-            'category_ru' => 'required|min:5',
+            'category' => 'required|min:5',
         ];
     }
 }
