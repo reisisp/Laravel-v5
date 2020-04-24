@@ -15,8 +15,10 @@
                         <h1>Все новости</h1><br>
                         @forelse($news as $item)
                             <h2>{{ $item->title }}</h2>
+                   {{--         <img src="{{ url($news->image ?? asset('storage/default.jpg')) }}" class="img-fluid" alt="Responsive image">--}}
+
                             @if (!$item->is_private)
-                                <a href="{{ route('news.show', [$item->category_en, $item->id]) }}">Подробнее...</a><br>
+                                <a href="{{ route('news.show', $item) }}">Подробнее...</a><br>
                             @endif
                             <hr>
                         @empty

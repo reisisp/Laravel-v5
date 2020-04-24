@@ -8,7 +8,7 @@ use Tests\TestCase;
 class ExampleTest extends TestCase
 {
     private $columns = [
-        'id', 'title', 'news_text', 'is_private', 'created_at', 'updated_at', 'category_id', 'category_en', 'category_ru'
+        'id', 'title', 'news_text', 'is_private', 'created_at', 'updated_at', 'category_id', 'slug', 'category'
     ];
 
     public function testIndexNews()
