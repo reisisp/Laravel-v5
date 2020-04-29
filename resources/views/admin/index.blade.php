@@ -27,16 +27,22 @@
                                 <a href="{{ route('admin.categories.index') }}">Изменить или удалить категории</a>
                             </li>
                             <li class="list-group-item list-group-item-action">
+                                <a href="{{ route('admin.profiles.create') }}">Добавить нового пользователя</a>
+                            </li>
+                            <li class="list-group-item list-group-item-action">
+                                <a href="{{ route('admin.profiles.index') }}">Изменить или удалить пользователя</a>
+                            </li>
+                            <li class="list-group-item list-group-item-action">
                                 <a href="{{ route('admin.json') }}">Выгрузить новости <span>(JSON)</span></a>
                             </li>
                             <li class="list-group-item list-group-item-action">
+                                <a href="{{ route('admin.resources.create') }}">Добавить RSS</a>
+                            </li>
+                            <li class="list-group-item list-group-item-action">
+                                <a href="{{ route('admin.resources.index') }}">Изменить или удалить RSS</a>
+                            </li>
+                            <li class="list-group-item list-group-item-action">
                                 <a href="{{ route('admin.parser') }}">Спарсить новости</a>
-                            </li>
-                            <li class="list-group-item list-group-item-action">
-                                <a href="{{ route('register') }}">Добавить пользователя</a>
-                            </li>
-                            <li class="list-group-item list-group-item-action">
-                                <a href="{{ route('register') }}">Все пользователи</a>
                             </li>
                         </ul>
                     </div>

@@ -62,7 +62,7 @@
                                     </div>
                                 @endif
                                 <textarea name="news_text" class="form-control" rows="5"
-                                          id="news_text">{{ old('news_text') ?? $news->news_text ?? "" }}</textarea>
+                                          id="textEdit">{!! old('news_text') ?? $news->news_text ?? "" !!}</textarea>
                             </div>
 
                             <div class="form-group">
@@ -103,4 +103,20 @@
             </div>
         </div>
     </div>
+
+    <script src="//cdn.ckeditor.com/4.6.2/standard/ckeditor.js"></script>
+    <script>
+        var options = {
+            filebrowserImageBrowseUrl: '/laravel-filemanager?type=Images',
+            filebrowserImageUploadUrl: '/laravel-filemanager/upload?type=Images&_token=',
+            filebrowserBrowseUrl: '/laravel-filemanager?type=Files',
+            filebrowserUploadUrl: '/laravel-filemanager/upload?type=Files&_token='
+        };
+    </script>
+    <script>
+        CKEDITOR.replace('textEdit', options);
+    </script>
 @endsection
+
+
+
