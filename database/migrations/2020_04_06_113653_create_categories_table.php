@@ -15,9 +15,10 @@ class CreateCategoriesTable extends Migration
     {
         Schema::create('categories', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('category_en', 50)->unique();
-            $table->string('category_ru', 50)->unique();
-            $table->timestamps();
+            $table->string('category', 50)->unique();
+            $table->string('slug', 50)->unique();
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->useCurrent();
         });
     }
 

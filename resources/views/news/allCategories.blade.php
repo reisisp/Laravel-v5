@@ -14,12 +14,13 @@
                     <div class="card-body">
                         <h1>Категории</h1><br>
                         @forelse($categories as $category)
-                            <a href="{{ route('categories.show', $category->category_en) }}">
-                                <h2>{{ $category->category_ru }}</h2>
+                            <a href="{{ route('categories.show', $category->slug) }}">
+                                <h2>{{ $category->category }}</h2>
                             </a>
                         @empty
                             Нет категорий
                         @endforelse
+                        {{ $categories->links() }}
                     </div>
                 </div>
             </div>

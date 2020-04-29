@@ -12,13 +12,14 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-body">
-                        @if (!$newsOne->is_private)
-                            <h2>{{ $newsOne->title }}</h2>
-                            <p>{{ $newsOne->news_text }}</p>
-                            <a href="{{ Redirect::back()->getTargetUrl() }}">Назад</a>
+                        @if (!$news->is_private)
+                            <h2>{{ $news->title }}</h2>
+                           {{-- <img src="{{ url($news->image ?? asset('storage/default.jpg')) }}" class="img-fluid" alt="Responsive image">--}}
+                            <p>{!! $news->news_text !!}</p>
                         @else
                             Новость приватная, зарегистрируйтесь для просмотра.
                         @endif
+                        <a href="{{ Redirect::back()->getTargetUrl() }}">Назад</a>
                     </div>
                 </div>
             </div>
